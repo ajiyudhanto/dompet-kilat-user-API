@@ -6,7 +6,7 @@ class UserController {
     static async register (req, res, next) {
         const { userName, email, password } = req.body
         try {
-            const user = User.create({
+            const user = await User.create({
                 userName, email, password
             })
             res.status(201).json({ message: 'registration success' })
@@ -18,8 +18,10 @@ class UserController {
     static async login (req, res, next) {
         const { userName, password } = req.body
         try {
-            const user = User.findOne({
-                userName
+            const user = await User.findOne({
+                where: {
+                    userName
+                }
             })
             if (user) {
                 const isValid = checkPassword(password, user.password)
@@ -35,11 +37,11 @@ class UserController {
     }
 
     static async getOne (req, res, next) {
-        const { access_token } = req.header
+        const { access_token } = req.headers
         try {
             if (access_token) {
                 const tokenData = verifyToken(access_token)
-                const user = User.findOne({
+                const user = await User.findOne({
                     where: {
                         userName: tokenData.userName,
                         email: tokenData.email
