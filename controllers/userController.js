@@ -11,7 +11,7 @@ class UserController {
             })
             res.status(201).json({ message: 'registration success' })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     }
 
@@ -29,10 +29,10 @@ class UserController {
                     const payload = { userName: user.userName, email: user.email }
                     const token = generateToken(payload)
                     res.status(200).json({ access_token: token })
-                } else throw ({ err: 'user name or password invalid' })
-            } else throw ({ err: 'user name or password invalid' })
+                } else throw ({ name: 'invalid username or password' })
+            } else throw ({ name: 'invalid username or password' })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     }
 
@@ -49,10 +49,10 @@ class UserController {
                 })
                 if (user) {
                     res.status(200).json({ userName: user.userName, email: user.email })
-                }  else throw ({ err: 'invalid token' })
-            } else throw ({ err: 'didnt have token' })
+                }  else throw ({ name: 'invalid token' })
+            } else throw ({ name: 'invalid token' })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     }
 }

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-function generateToken (payload) { //will be expired in 30 s
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 30 }) //process.env.JWT_SECRET = flashwallet
+function generateToken (payload) { //token will be expired in 60 s
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 60 }) //process.env.JWT_SECRET = flashwallet
 }
 
 function verifyToken (token) {
