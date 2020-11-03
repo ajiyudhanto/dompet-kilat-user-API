@@ -33,6 +33,8 @@ function errorHandler (err, req, res, next) {
             statusCode = 401
             errors.push('invalid token, must login with correct username and password')
         }
+    } else {
+        errors.push('internal server error')
     }
 
     res.status(statusCode).json({ errors })
