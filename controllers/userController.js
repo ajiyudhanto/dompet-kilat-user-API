@@ -1,6 +1,6 @@
 const { User } = require('../models')
 const { checkPassword } = require('../helpers/bcrypt')
-const { generateToken } = require('../helpers/jwt')
+const { generateToken, verifyToken } = require('../helpers/jwt')
 
 class UserController {
     static async register (req, res, next) {
@@ -34,8 +34,24 @@ class UserController {
         }
     }
 
-    static getOne (req, res, next) {
-
+    static async getOne (req, res, next) {
+        const { access_token } = req.header
+        try {
+            if (access_token) {
+                const tokenData = verifyToken(access_token)
+                const user = User.findOne({
+                    where: {
+                        userName: tokenData.userName,
+                        email: tokenData.email
+                    }
+                })
+                if (user) {
+                    res.status(200).json({ userName: user.userName, email: user.email })
+                }  else throw ({ err: 'invalid token' })
+            } else throw ({ err: 'didnt have token' })
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

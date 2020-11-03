@@ -5,6 +5,6 @@ const userController = require('../controllers/userController')
 router.get('/', (req, res) => { res.send('connected!') })
 router.post('/register', userController.register)
 router.post('/login', userController.login)
-router.get('/home', userController.getOne)
+router.get('/user', userController.getOne)
 
 module.exports = router
